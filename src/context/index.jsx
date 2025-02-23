@@ -1,6 +1,6 @@
 // index.jsx
 import React, { createContext, useContext } from 'react';
-import { useAddress, useContract, useMetamask, useContractWrite, normalizeAmount } from '@thirdweb-dev/react';
+import { useAddress, useContract, useContractWrite, normalizeAmount, useConnect, metamaskWallet } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 
 const StateContext = createContext();
@@ -10,7 +10,7 @@ export const StateContextProvider = ({ children }) => {
     const { mutateAsync: createCampaign, isLoading, error } = useContractWrite(contract, 'createCampaign');
 
     const address = useAddress();
-    const connect = useMetamask();
+    const connect = useConnect();
 
     const publishCampaign = async (form) => {
         try {
