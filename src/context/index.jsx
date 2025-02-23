@@ -1,4 +1,4 @@
-// index.jsx
+// context/index.jsx
 import React, { createContext, useContext } from 'react';
 import { useAddress, useContract, useContractWrite, normalizeAmount, useConnect, metamaskWallet } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
@@ -10,7 +10,8 @@ export const StateContextProvider = ({ children }) => {
     const { mutateAsync: createCampaign, isLoading, error } = useContractWrite(contract, 'createCampaign');
 
     const address = useAddress();
-    const connect = useConnect();
+    const connect = useConnect(metamaskWallet());
+    console.log("connect function:", connect)
 
     const publishCampaign = async (form) => {
         try {
