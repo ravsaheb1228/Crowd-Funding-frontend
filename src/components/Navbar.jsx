@@ -4,10 +4,16 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useStateContext } from '../context'
 import { CustomButton } from './';
-import { logo, menu, search, thirdweb } from '../assets';
+import { logo, menu, search } from '../assets';
 import { navlinks } from '../constants';
 
 import { metamaskWallet } from '@thirdweb-dev/react'
+import { useAuth0 } from "@auth0/auth0-react";
+import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import ProfilePicture from '../components/ProfilePicture';
+import { TbLogout } from "react-icons/tb";
+import { FaUserTie } from "react-icons/fa";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -15,6 +21,11 @@ const Navbar = () => {
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const { connect, address } = useStateContext();
 
+  const { user, isAuthenticated, logout } = useAuth0();
+
+  const handleClick = () => {
+    navigate('/Profile')
+  }
 
   return (
     <div className='flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6'>
@@ -33,7 +44,7 @@ const Navbar = () => {
           handleClick={async () => {
             try {
               if (address) {
-                navigate('create-campaign');
+                navigate('/create-campaign');
               } else {
                 await connect(metamaskWallet()); // Ensure connect works smoothly
               }
@@ -43,12 +54,53 @@ const Navbar = () => {
           }}
         />
 
-        <Link to="/profile">
-          <div className='w-[52px] h-[52px] rounded-full bg-[#2c2f32] flex justify-center items-center cursor-pointer'>
-            <img src={thirdweb} alt="user" className='w-[60%] h-[60%] object-contain ' />
+        {isAuthenticated && user && (
+          <NavigationMenu.Root className="hidden lg:flex items-center space-x-8">
+            <NavigationMenu.List className="flex space-x-8">
 
-          </div>
-        </Link>
+              <NavigationMenu.Item className="relative">
+                <NavigationMenu.Trigger>
+                  <ProfilePicture />
+                </NavigationMenu.Trigger>
+
+                <NavigationMenu.Content className="absolute top-full right-0 mt-2 w-64 bg-zinc-900 rounded-lg shadow-lg p-4 space-y-2 z-50 ">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div>
+                      <p className="text-white font-bold text-lg">{user.name}</p>
+                      <p className="text-neutral-400 text-sm">{user.email}</p>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <div className="flex items-center space-x-3 mb-4 p-2 hover:bg-zinc-700 rounded-lg transition-colors">
+                    <FaUserTie className='text-white size-5' />
+                    <button
+                      onClick={handleClick}
+                      className="w-full text-left text-white "
+                    >
+                      Your Profile
+                    </button>
+                  </div>
+
+                  <hr />
+
+                  <div className="flex items-center space-x-3 mb-4 p-2 hover:bg-zinc-700 rounded-lg transition-colors">
+                    <TbLogout className='text-white size-5' />
+                    <button
+                      onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+                      className="w-full text-left text-white "
+                    >
+                      Log Out
+                    </button>
+                  </div>
+
+                </NavigationMenu.Content>
+              </NavigationMenu.Item>
+
+            </NavigationMenu.List>
+          </NavigationMenu.Root>
+        )}
       </div>
 
       {/* Small screen navigation */}
@@ -96,7 +148,7 @@ const Navbar = () => {
               handleClick={async () => {
                 try {
                   if (address) {
-                    navigate('create-campaign');
+                    navigate('/create-campaign');
                   } else {
                     await connect(metamaskWallet()); // Ensure connect works smoothly
                   }
