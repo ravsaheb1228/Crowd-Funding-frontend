@@ -1,7 +1,9 @@
+// App.jsx
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Sidebar, Navbar } from './components';
 import { CampaignDetails, CreateCampaign, Home, Profile, LandingPage } from './pages';
+import LoginPage from '@/components/LoginPage'
 
 // Protected Route wrapper component
 // const ProtectedRoute = ({ children }) => {
@@ -35,6 +37,8 @@ const App = () => {
     <Routes>
       {/* Public routes */}
       <Route path="/landing" element={<LandingPage />} />
+
+      <Route path="/LoginPage" element={<LoginPage />} />
       
       {/* Protected routes */}
       <Route path="/home" element={

@@ -1,11 +1,10 @@
 import React from 'react';
 import { logo } from '../assets';
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { useAuth0 } from "@auth0/auth0-react";
+import LoginPage from './LoginPage'
 
 
 const Nav = () => {
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
 
     return (
         <nav className='w-full fixed bg-black top-0 left-0 flex justify-between items-center py-4 px-5 md:px-10 lg:px-15 text-white z-10'>
@@ -45,23 +44,8 @@ const Nav = () => {
             </NavigationMenu.Root>
 
             {/* Login / Sign Up Button */}
-            <div className='flex items-center gap-x-4'>
-                {isAuthenticated ? (
-                    <button
-                        onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-                        className='bg-stone-900 text-white font-epilogue rounded-lg px-6 py-2 hover:bg-neutral-700'
-                    >
-                        Log Out
-                    </button>
-                ) : (
-                    <button
-                        onClick={() => loginWithRedirect()}
-                        className='bg-stone-900 text-white font-epilogue rounded-lg px-6 py-2 hover:bg-neutral-700'
-                    >
-                        Log In
-                    </button>
-                )}
-            </div>
+            <LoginPage/>
+            
         </nav>
     );
 };
