@@ -20,7 +20,7 @@ const AboutSection = () => {
           </div>
           <div className="bg-gray-800 h-64 md:h-auto rounded-lg flex items-center justify-center">
             <div className="text-gray-500 text-lg">
-              <img src="client/src/assets/team.jpg" alt="team" />
+              <img src="client/src/assets/team.png" alt="team" />
             </div>
           </div>
         </div>

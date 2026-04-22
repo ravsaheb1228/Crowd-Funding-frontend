@@ -5,17 +5,17 @@ import { Sidebar, Navbar } from './components';
 import { CampaignDetails, CreateCampaign, Home, Profile, LandingPage } from './pages';
 import LoginPage from '@/components/LoginPage'
 
-// Protected Route wrapper component
-// const ProtectedRoute = ({ children }) => {
-//   // Replace this with your actual auth check
-//   const isAuthenticated = false; // This should come from your auth state management
+// protected Route wrapper component
+const ProtectedRoute = ({ children }) => {
+  // Replace this with your actual auth check
+  const isAuthenticated = false; // This should come from your auth state management
 
-//   if (!isAuthenticated) {
-//     return <Navigate to="/landing" replace />;
-//   }
+  if (!isAuthenticated) {
+    return <Navigate to="/landing" replace />;
+  }
 
-//   return children;
-// };
+  return children;
+};
 
 // Dashboard Layout component
 const DashboardLayout = ({ children }) => {
@@ -42,35 +42,35 @@ const App = () => {
       
       {/* Protected routes */}
       <Route path="/home" element={
-        // <ProtectedRoute>
+        <ProtectedRoute>
           <DashboardLayout>
             <Home />
           </DashboardLayout>
-        // </ProtectedRoute>
+        </ProtectedRoute>
       } />
       
       <Route path="/profile" element={
-        // <ProtectedRoute>
+        <ProtectedRoute>
           <DashboardLayout>
             <Profile />
           </DashboardLayout>
-        // </ProtectedRoute>
+        </ProtectedRoute>
       } />
       
       <Route path="/create-campaign" element={
-        // <ProtectedRoute>
+        <ProtectedRoute>
           <DashboardLayout>
             <CreateCampaign />
           </DashboardLayout>
-        // </ProtectedRoute>
+        </ProtectedRoute>
       } />
       
       <Route path="/campaign-details/:id" element={
-        // <ProtectedRoute>
+        <ProtectedRoute>
           <DashboardLayout>
             <CampaignDetails />
           </DashboardLayout>
-        // </ProtectedRoute>
+        </ProtectedRoute>
       } />
 
       {/* Redirect unknown routes to landing */}
