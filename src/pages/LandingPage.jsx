@@ -1,36 +1,21 @@
-// src/pages/LandingPage.jsx
-
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
-import HeroSection from '@/components/HeroSection';
-import ServicesSection from '@/components/ServicesSection';
-import ContactSection from '@/components/ContactSection';
-import AboutSection from '@/components/AboutSection';
+import HeroSection from '../components/HeroSection';
+import ServicesSection from '../components/ServicesSection';
+import ContactSection from '../components/ContactSection';
+import AboutSection from '../components/AboutSection';
 
 const LandingPage = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen bg-black text-white md:p-5">
-      {/* Navigation */}
+    <div className="bg-black text-white">
       <Nav />
-
-      {/* Hero Section */}
-      <HeroSection/>
-
-      {/* Services Section */}
-      <ServicesSection/>
-
-      {/* About Us Section */}
-      <AboutSection/>
-
-      {/* Contact Section */}
-      <ContactSection/>
-
-      {/* Footer */}
-      <footer className="text-center text-white py-6 bg-black">
-        © 2025 YourCrowdFundApp. All Rights Reserved.
+      {/* HeroSection is h-screen and centers its content, no extra padding needed */}
+      <HeroSection />
+      <ServicesSection />
+      <AboutSection />
+      <ContactSection />
+      <footer className="text-center text-gray-500 py-6 bg-black border-t border-gray-900 text-sm">
+        © 2025 CrowdFund. All Rights Reserved.
       </footer>
     </div>
   );

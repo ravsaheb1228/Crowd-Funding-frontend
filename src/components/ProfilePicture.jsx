@@ -1,27 +1,16 @@
-import React from 'react'
-import { useAuth0 } from "@auth0/auth0-react";
+import React from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const ProfilePicture = () => {
-    const { user } = useAuth0();
-    const userlogo = user?.picture;
-    const userName = user?.name || "User";
+    const { user } = useAuth();
+    const userName = user?.name || 'User';
+    const initial = userName.charAt(0).toUpperCase();
 
     return (
-        <div className='text-white flex items-start justify-center rounded-full font-bold text-2xl'>
-            {
-                userlogo ? (
-                    <img
-                        src={userlogo}
-                        alt={user?.name}
-                        className='rounded-full w-10 h-10' />
-                ) : (
-                    <span className='text-white bg-gray-50'>
-                        {userName.charAt[0].toUpperCase()}
-                    </span>
-                )
-            }
+        <div className='w-10 h-10 rounded-full bg-[#8c6dfd] flex items-center justify-center text-white font-bold text-lg cursor-pointer'>
+            {initial}
         </div>
-    )
-}
+    );
+};
 
-export default ProfilePicture
+export default ProfilePicture;

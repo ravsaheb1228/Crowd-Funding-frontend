@@ -1,15 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { logo } from '../assets';
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import LoginPage from './LoginPage'
-
+import { useAuth } from '../context/AuthContext';
 
 const Nav = () => {
+    const navigate = useNavigate();
+    const { isAuthenticated, logout } = useAuth();
 
     return (
         <nav className='w-full fixed bg-black top-0 left-0 flex justify-between items-center py-4 px-5 md:px-10 lg:px-15 text-white z-10'>
-            {/* Logo Section */}
-            <div className='flex gap-x-2 cursor-pointer md:-left-0 '>
+
+            {/* Logo */}
+            <div className='flex gap-x-2 cursor-pointer' onClick={() => navigate('/landing')}>
                 <img src={logo} alt="Company logo" className='h-8' />
                 <h4 className='font-epilogue text-lg'>CrowdFund</h4>
             </div>
@@ -43,9 +46,33 @@ const Nav = () => {
                 </NavigationMenu.List>
             </NavigationMenu.Root>
 
-            {/* Login / Sign Up Button */}
-            <LoginPage/>
-            
+            {/* Auth Buttons */}
+            <div className='flex items-center gap-x-3'>
+                {isAuthenticated ? (
+                    <>
+                        <button
+                            onClick={() => navigate('/home')}
+                            className='text-sm text-gray-300 hover:text-white transition'
+                        >
+                            Dashboard
+                        </button>
+                        <button
+                            onClick={() => { logout(); navigate('/landing'); }}
+                            className='bg-stone-800 hover:bg-stone-700 text-white text-sm rounded-lg px-5 py-2 transition'
+                        >
+                            Log Out
+                        </button>
+                    </>
+                ) : (
+                    <button
+                        onClick={() => navigate('/login')}
+                        className='bg-[#8c6dfd] hover:bg-[#7b5de0] text-white text-sm font-semibold rounded-lg px-5 py-2 transition'
+                    >
+                        Login
+                    </button>
+                )}
+            </div>
+
         </nav>
     );
 };

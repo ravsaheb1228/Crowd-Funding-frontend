@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useStateContext } from '../context'
+import { useStateContext } from '../context';
 import { CustomButton } from './';
 import { logo, menu, search } from '../assets';
 import { navlinks } from '../constants';
 
-import { metamaskWallet } from '@thirdweb-dev/react'
-import { useAuth0 } from "@auth0/auth0-react";
+import { metamaskWallet } from '@thirdweb-dev/react';
+import { useAuth } from '../context/AuthContext';
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import ProfilePicture from '../components/ProfilePicture';
 import { TbLogout } from "react-icons/tb";
@@ -19,16 +19,16 @@ const Navbar = () => {
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const { connect, address } = useStateContext();
 
-  const { user, isAuthenticated, logout } = useAuth0();
+  const { user, isAuthenticated, logout } = useAuth();
 
-  const handleClick = () => {
+  const handleProfileClick = () => {
     navigate('/profile');
-  }
+  };
 
   return (
     <div className='flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6'>
 
-      {/* 🔍 Search */}
+      {/* Search */}
       <div className='lg:flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px] bg-[#1c1c24] rounded-[100px]'>
         <input
           type="text"
@@ -40,20 +40,18 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* 🔥 Right Section */}
+      {/* Right Section */}
       <div className='sm:flex hidden flex-row justify-end gap-4'>
 
-        {/* ✅ LOGIN BUTTON (NEW FIX) */}
         {!isAuthenticated && (
           <CustomButton
             btnType="button"
             title="Login"
             styles="bg-[#8c6dfd]"
-            handleClick={() => navigate('/LoginPage')}
+            handleClick={() => navigate('/login')}
           />
         )}
 
-        {/* ✅ WALLET BUTTON (ONLY AFTER LOGIN - OPTIONAL BUT BETTER UX) */}
         {isAuthenticated && (
           <CustomButton
             btnType="button"
@@ -67,13 +65,12 @@ const Navbar = () => {
                   await connect(metamaskWallet());
                 }
               } catch (error) {
-                console.error('Error:', error);
+                console.error('Wallet connect error:', error);
               }
             }}
           />
         )}
 
-        {/* ✅ PROFILE MENU */}
         {isAuthenticated && user && (
           <NavigationMenu.Root className="hidden lg:flex items-center space-x-8">
             <NavigationMenu.List>
@@ -88,21 +85,18 @@ const Navbar = () => {
                   <p className="text-white font-bold">{user.name}</p>
                   <p className="text-gray-400 text-sm">{user.email}</p>
 
-                  <hr className="my-2" />
+                  <hr className="my-2 border-zinc-700" />
 
-                  <div className="flex items-center gap-2 p-2 hover:bg-zinc-700 rounded">
+                  <div className="flex items-center gap-2 p-2 hover:bg-zinc-700 rounded cursor-pointer">
                     <FaUserTie className='text-white' />
-                    <button onClick={handleClick} className="text-white">
+                    <button onClick={handleProfileClick} className="text-white">
                       Your Profile
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-2 p-2 hover:bg-zinc-700 rounded">
+                  <div className="flex items-center gap-2 p-2 hover:bg-zinc-700 rounded cursor-pointer">
                     <TbLogout className='text-white' />
-                    <button
-                      onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-                      className="text-white"
-                    >
+                    <button onClick={() => { logout(); navigate('/landing'); }} className="text-white">
                       Log Out
                     </button>
                   </div>
@@ -115,7 +109,7 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* 📱 Mobile Menu */}
+      {/* Mobile Menu */}
       <div className="sm:hidden flex justify-between items-center relative">
 
         <div className="w-[40px] h-[40px] bg-[#2c2f32] flex justify-center items-center">
@@ -135,7 +129,7 @@ const Navbar = () => {
             {navlinks.map((link) => (
               <li
                 key={link.name}
-                className="p-4"
+                className="p-4 text-white"
                 onClick={() => {
                   setIsActive(link.name);
                   setToggleDrawer(false);
@@ -147,14 +141,24 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* ✅ MOBILE LOGIN BUTTON */}
           {!isAuthenticated && (
             <div className="p-4">
               <CustomButton
                 btnType="button"
                 title="Login"
                 styles="bg-[#8c6dfd]"
-                handleClick={() => navigate('/LoginPage')}
+                handleClick={() => navigate('/login')}
+              />
+            </div>
+          )}
+
+          {isAuthenticated && (
+            <div className="p-4">
+              <CustomButton
+                btnType="button"
+                title="Log Out"
+                styles="bg-red-600"
+                handleClick={() => { logout(); navigate('/landing'); }}
               />
             </div>
           )}
@@ -162,7 +166,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Navbar;

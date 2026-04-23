@@ -60,32 +60,30 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <section id='services' className="bg-transparent py-20 text-white">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-12">
-          Our <span className="text-violet-500">Services</span>
-        </h2>
-        <div className="space-y-16">
+    <section id='services' className="bg-black py-24 text-white scroll-mt-20">
+      <div className="max-w-5xl mx-auto px-6">
+        <AnimatedContent distance={50} direction="vertical" delay={0}>
+          <h2 className="text-4xl font-bold text-center mb-16">
+            Our <span className="text-violet-500">Services</span>
+          </h2>
+        </AnimatedContent>
+        <div className="space-y-20">
           {services.map((service, index) => (
             <AnimatedContent
               key={index}
-              distance={150}
+              distance={100}
               direction="horizontal"
               reverse={index % 2 !== 0}
-              delay={index * 200}
-              className="w-full"
+              delay={0}
             >
-              <div
-                className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''
-                  }`}
-              >
+              <div className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-10`}>
                 <div className="flex-1">
-                  <div className="text-6xl mb-4">{service.icon}</div>
-                  <h3 className="text-3xl font-semibold mb-4">{service.title}</h3>
-                  <p className="text-gray-400 text-lg">{service.description}</p>
+                  <div className="text-5xl mb-4 text-violet-400">{service.icon}</div>
+                  <h3 className="text-2xl font-semibold mb-3">{service.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{service.description}</p>
                 </div>
-                <div className="flex-1 h-60 bg-gray-800 rounded-2xl">
-                  <img src={service.image} alt={service.title} className="w-full h-60 object-cover rounded-2xl" />
+                <div className="flex-1 rounded-2xl overflow-hidden border border-gray-800 shadow-lg shadow-black/40">
+                  <img src={service.image} alt={service.title} className="w-full h-60 object-cover" />
                 </div>
               </div>
             </AnimatedContent>
